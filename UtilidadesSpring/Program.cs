@@ -18,7 +18,7 @@ namespace UtilidadesSpring
         public static void generalClases() {
             ConfiguracionGeneral cnf = new ConfiguracionGeneral(
                 "cu.edu.unah.demo"
-                , @"D:\_Cosas\pincha\Isbel\Spring Security RestApi - Spring Boot Proyect modificar\Demo\src\main\java\cu\edu\unah\demo"
+                , @"D:\_Cosas\pincha\Isbel\Spring Security RestApi - Spring Boot Proyect modificar\RestApiCapasitacionUniversitaria\src\main\java\cu\edu\unah\demo"
                 , "Rest"
                 , @"D:\_Cosas\pincha\Isbel\CapasitacionUniversitariaWeb\src\main\java\Rest"
                 );

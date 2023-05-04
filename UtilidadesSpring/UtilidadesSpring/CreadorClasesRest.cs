@@ -74,6 +74,34 @@ namespace UtilidadesSpring
             mr += separacion + "public class Rest"+nombre+" {";
             mr += separacion1 + "private static final HttpClient client = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();";
             mr += separacion1 + "private static final String serviceURL = \"http://localhost:8081/"+nombre+"/\";";
+
+            mr += separacion1 + "public "+nombre+" findById(int id) {";
+            mr += separacion2 + ""+nombre+" "+nombreVariable+" = null;";
+            mr += separacion2 + "HttpRequest req = HttpRequest.newBuilder(URI.create(serviceURL+\"find/\"+id)).GET().build();";
+            mr += separacion2 + "CompletableFuture<HttpResponse<String>> response = client.sendAsync(req, HttpResponse.BodyHandlers.ofString());";
+            mr += separacion2 + "try {";
+            mr += separacion3 + "if(response.get().statusCode() == 500){";
+            mr += separacion4 + "response.join();";
+            mr += separacion4 + "return null;";
+            mr += separacion3 + "}else {";
+            mr += separacion4 + "try {";
+            mr += separacion5 + ""+nombreVariable+" = JSONUtils.covertFromJsonToObject(response.get().body(), "+nombre+".class);";
+            mr += separacion4 + "} catch (InterruptedException e) {";
+            mr += separacion5 + "e.printStackTrace();";
+            mr += separacion4 + "} catch (ExecutionException e) {";
+            mr += separacion5 + "e.printStackTrace();";
+            mr += separacion4 + "}";
+            mr += separacion4 + "response.join();";
+            mr += separacion4 + "return "+nombreVariable+";";
+            mr += separacion3 + "}";
+            mr += separacion2 + "} catch (InterruptedException e) {";
+            mr += separacion3 + "e.printStackTrace();";
+            mr += separacion2 + "} catch (ExecutionException e) {";
+            mr += separacion3 + "e.printStackTrace();";
+            mr += separacion2 + "}";
+            mr += separacion2 + "return "+nombreVariable+";";
+            mr += separacion1 + "}";
+
             mr += separacion1 + "//sending request to retrieve all "+nombreVariable+"s available.";
             //mr += separacion1 + "public List<"+nombre+"> findAll"+nombre+"() {";
             mr += separacion1 + "public List<" + nombre + "> findAll() {";
@@ -140,8 +168,9 @@ namespace UtilidadesSpring
             mr += separacion1 + "}";
             mr += separacion1 + "//send request to delete the "+nombreVariable+" by its "+nombreVariable+"name";
             //mr += separacion1 + "public boolean delete"+nombre+"(String "+nombreVariable+"name) {";
-            mr += separacion1 + "public boolean delete(String " + nombreVariable + "name) {";
-            mr += separacion2 + "HttpRequest request = HttpRequest.newBuilder(URI.create(serviceURL+\"delete/\"+"+nombreVariable+"name)).DELETE().build();";
+            
+            mr += separacion1 + "public boolean delete("+tipoDeDatoId+" id) {";
+            mr += separacion2 + "HttpRequest request = HttpRequest.newBuilder(URI.create(serviceURL+\"delete/\"+id)).DELETE().build();";
             mr += separacion2 + "CompletableFuture<HttpResponse<String>> response = client.sendAsync(request,HttpResponse.BodyHandlers.ofString());";
             mr += separacion2 + "try {";
             mr += separacion3 + "if(response.get().statusCode() == 500) {";
