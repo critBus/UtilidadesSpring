@@ -75,12 +75,13 @@ namespace UtilidadesSpring
             mr += separacion1 + "private static final HttpClient client = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();";
             mr += separacion1 + "private static final String serviceURL = \"http://localhost:8081/"+nombre+"/\";";
 
-            mr += separacion1 + "public "+nombre+" findById(int id) {";
+            mr += separacion1 + "public "+nombre+ " findById(int id) throws Exception{";
             mr += separacion2 + ""+nombre+" "+nombreVariable+" = null;";
             mr += separacion2 + "HttpRequest req = HttpRequest.newBuilder(URI.create(serviceURL+\"find/\"+id)).GET().build();";
             mr += separacion2 + "CompletableFuture<HttpResponse<String>> response = client.sendAsync(req, HttpResponse.BodyHandlers.ofString());";
             mr += separacion2 + "try {";
-            mr += separacion3 + "if(response.get().statusCode() == 500){";
+            mr += separacion3 + "//pq por encima de este numero es una peticion incorrecta";
+            mr += separacion3 + "if(response.get().statusCode() > 299){";
             mr += separacion4 + "response.join();";
             mr += separacion4 + "return null;";
             mr += separacion3 + "}else {";
@@ -104,7 +105,7 @@ namespace UtilidadesSpring
 
             mr += separacion1 + "//sending request to retrieve all "+nombreVariable+"s available.";
             //mr += separacion1 + "public List<"+nombre+"> findAll"+nombre+"() {";
-            mr += separacion1 + "public List<" + nombre + "> findAll() {";
+            mr += separacion1 + "public List<" + nombre + "> findAll() throws Exception{";
             mr += separacion2 + "HttpRequest req = HttpRequest.newBuilder(URI.create(serviceURL+\"findAll\")).GET().build();";
             mr += separacion2 + "CompletableFuture<HttpResponse<String>> response = client.sendAsync(req, HttpResponse.BodyHandlers.ofString());";
             mr += separacion2 + "List<"+nombre+"> list_"+nombreVariable+"s = null;";
@@ -121,7 +122,7 @@ namespace UtilidadesSpring
             mr += separacion1 + "}";
             mr += separacion1 + "//send request to add the product details.";
             //mr += separacion1 + "public boolean create"+nombre+"("+nombre+" "+nombreVariable+"){";
-            mr += separacion1 + "public boolean create(" + nombre + " " + nombreVariable + "){";
+            mr += separacion1 + "public boolean create(" + nombre + " " + nombreVariable + ")throws Exception{";
             mr += separacion2 + "String inputJson = null;";
             mr += separacion2 + "inputJson = JSONUtils.covertFromObjectToJson("+nombreVariable+");";
             mr += separacion2 + "HttpRequest request = HttpRequest.newBuilder(URI.create(serviceURL+\"create\"))";
@@ -129,7 +130,8 @@ namespace UtilidadesSpring
             mr += separacion4 + ".POST(HttpRequest.BodyPublishers.ofString(inputJson)).build();";
             mr += separacion2 + "CompletableFuture<HttpResponse<String>> response = client.sendAsync(request,HttpResponse.BodyHandlers.ofString());";
             mr += separacion2 + "try {";
-            mr += separacion3 + "if(response.get().statusCode() == 500){";
+            mr += separacion3 + "//pq por encima de este numero es una peticion incorrecta";
+            mr += separacion3 + "if(response.get().statusCode() > 299){";
             mr += separacion4 + "return false;";
             mr += separacion3 + "}";
             mr += separacion2 + "} catch (InterruptedException e) {";
@@ -143,7 +145,7 @@ namespace UtilidadesSpring
             mr += separacion1 + "}";
             mr += separacion1 + "//send request to update a "+nombre+" details.";
             //mr += separacion1 + "public boolean update"+nombre+"("+nombre+" "+nombreVariable+"){";
-            mr += separacion1 + "public boolean update(" + nombre + " " + nombreVariable + "){";
+            mr += separacion1 + "public boolean update(" + nombre + " " + nombreVariable + ")throws Exception{";
             mr += separacion2 + "String inputJson= null;";
             mr += separacion2 + "inputJson = JSONUtils.covertFromObjectToJson("+nombreVariable+");";
             mr += separacion2 + "HttpRequest request = HttpRequest.newBuilder(URI.create(serviceURL+\"update\"))";
@@ -151,7 +153,8 @@ namespace UtilidadesSpring
             mr += separacion4 + ".PUT(HttpRequest.BodyPublishers.ofString(inputJson)).build();";
             mr += separacion2 + "CompletableFuture<HttpResponse<String>> response = client.sendAsync(request,HttpResponse.BodyHandlers.ofString());";
             mr += separacion2 + "try {";
-            mr += separacion3 + "if(response.get().statusCode() == 500){";
+            mr += separacion3 + "//pq por encima de este numero es una peticion incorrecta";
+            mr += separacion3 + "if(response.get().statusCode() > 299){";
             mr += separacion4 + "response.join();";
             mr += separacion4 + "return false;";
             mr += separacion3 + "} else {";
@@ -169,15 +172,16 @@ namespace UtilidadesSpring
             mr += separacion1 + "//send request to delete the "+nombreVariable+" by its "+nombreVariable+"name";
             //mr += separacion1 + "public boolean delete"+nombre+"(String "+nombreVariable+"name) {";
             
-            mr += separacion1 + "public boolean delete("+tipoDeDatoId+" id) {";
+            mr += separacion1 + "public boolean delete("+tipoDeDatoId+ " id)throws Exception {";
             mr += separacion2 + "HttpRequest request = HttpRequest.newBuilder(URI.create(serviceURL+\"delete/\"+id)).DELETE().build();";
             mr += separacion2 + "CompletableFuture<HttpResponse<String>> response = client.sendAsync(request,HttpResponse.BodyHandlers.ofString());";
             mr += separacion2 + "try {";
-            mr += separacion3 + "if(response.get().statusCode() == 500) {";
+            mr += separacion3 + "//pq por encima de este numero es una peticion incorrecta";
+            mr += separacion3 + "if(response.get().statusCode() > 299){";
             mr += separacion4 + "response.join();";
             mr += separacion4 + "return false;";
             mr += separacion3 + "} else {";
-            mr += separacion4 + ""+nombre+" "+nombreVariable+" = JSONUtils.covertFromJsonToObject(response.get().body(), "+nombre+".class);";
+            //mr += separacion4 + ""+nombre+" "+nombreVariable+" = JSONUtils.covertFromJsonToObject(response.get().body(), "+nombre+".class);";
             mr += separacion4 + "response.join();";
             mr += separacion4 + "return true;";
             mr += separacion3 + "}";
