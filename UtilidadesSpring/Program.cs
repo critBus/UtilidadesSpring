@@ -25,7 +25,7 @@ namespace UtilidadesSpring
             //new CreadorClasesRepositorio(cnf).crearClasesRepository();
             //new CreadorClasesServicios(cnf).crearClasesServicios();
             //new CreadorClasesControles(cnf).crearClasesControlador();
-            new CreadorClasesRest(cnf).crearClasesControlador();
+            new CreadorClasesRest(cnf).crearClasesRest();
             cwl("termino");
         }
     }

@@ -16,7 +16,7 @@ namespace UtilidadesSpring
 
 
         }
-        public void crearClasesControlador()
+        public void crearClasesRest()
         {
             List<string> nombreClases = new List<string>();
             Archivos.recorrerArchivosExternos(cnf.carpetaModel,
@@ -192,6 +192,39 @@ namespace UtilidadesSpring
             mr += separacion2 + "}";
             mr += separacion2 + "return false;";
             mr += separacion1 + "}";
+
+            mr += separacion1 + "public "+nombre+" createAndGet("+nombre+" "+nombreVariable+")throws Exception{";
+            mr += separacion2 + "String inputJson = null;";
+            mr += separacion2 + "inputJson = JSONUtils.covertFromObjectToJson("+nombreVariable+");";
+            mr += separacion2 + "HttpRequest request = HttpRequest.newBuilder(URI.create(serviceURL+\"create\"))";
+            mr += separacion4 + ".header(\"Content-Type\", \"application/json\")";
+            mr += separacion4 + ".POST(HttpRequest.BodyPublishers.ofString(inputJson)).build();";
+            mr += separacion2 + "CompletableFuture<HttpResponse<String>> response = client.sendAsync(request,HttpResponse.BodyHandlers.ofString());";
+            mr += separacion2 + ""+nombreVariable+"=null;";
+            mr += separacion2 + "try {";
+            mr += separacion3 + "//pq por encima de este numero es una peticion incorrecta";
+            mr += separacion3 + "if(response.get().statusCode() > 299){";
+            mr += separacion4 + "response.join();";
+            mr += separacion4 + "return null;";
+            mr += separacion3 + "}else {";
+            mr += separacion4 + "try {";
+            mr += separacion5 + ""+nombreVariable+" = JSONUtils.covertFromJsonToObject(response.get().body(), "+nombre+".class);";
+            mr += separacion4 + "} catch (InterruptedException e) {";
+            mr += separacion5 + "e.printStackTrace();";
+            mr += separacion4 + "} catch (ExecutionException e) {";
+            mr += separacion5 + "e.printStackTrace();";
+            mr += separacion4 + "}";
+            mr += separacion4 + "response.join();";
+            mr += separacion4 + "return "+nombreVariable+";";
+            mr += separacion3 + "}";
+            mr += separacion2 + "} catch (InterruptedException e) {";
+            mr += separacion3 + "e.printStackTrace();";
+            mr += separacion2 + "} catch (ExecutionException e) {";
+            mr += separacion3 + "e.printStackTrace();";
+            mr += separacion2 + "}";
+            mr += separacion2 + "return "+nombreVariable+";";
+            mr += separacion1 + "}";
+
             mr += separacion + "}";
             return mr;
         }
