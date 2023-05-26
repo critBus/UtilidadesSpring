@@ -70,6 +70,7 @@
     <Compile Include="UtilidadesSpring\ConfiguracionGeneral.cs" />
     <Compile Include="UtilidadesSpring\CreadorClasesControles.cs" />
     <Compile Include="UtilidadesSpring\CreadorClasesRepositorio.cs" />
+    <Compile Include="UtilidadesSpring\CreadorClasesRestJava8.cs" />
     <Compile Include="UtilidadesSpring\CreadorClasesRest.cs" />
     <Compile Include="UtilidadesSpring\CreadorClasesServicios.cs" />
     <Compile Include="UtilidadesSpring\OperacionUtileSpring.cs" />
